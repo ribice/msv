@@ -21,7 +21,6 @@ type Server struct {
 // New instantiates new http server
 func New(port int) (*Server, *mux.Router) {
 	m := mux.NewRouter()
-	// m.Use(middleware.Recoverer, middleware.Logger, middleware.RequestID, middleware.RealIP)
 
 	srv := &Server{m: m, Server: &http.Server{
 		Addr:    fmt.Sprintf(":%v", port),
