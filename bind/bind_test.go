@@ -1,9 +1,15 @@
 package bind_test
 
 import (
+	"bytes"
 	"errors"
+	"io/ioutil"
+	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
+
+	"github.com/ribice/msv/bind"
 )
 
 func (r *req) Bind() error {
@@ -15,8 +21,8 @@ func (r *req) Bind() error {
 }
 
 type req struct {
-	Name string
-	Age  int
+	Name string `json:"name"`
+	Age  int    `json:"age"`
 }
 
 func TestJSON(t *testing.T) {
@@ -31,26 +37,53 @@ func TestJSON(t *testing.T) {
 		{
 			name:        "Error decoding JSON",
 			wantStatus:  500,
-			wantMessage: "error decoding json",
-			request:     "",
+			wantMessage: "error decoding json: invalid character '}' after object key",
+			request:     `{"invalid:json"}`,
 		},
 		{
 			name:        "Error binding data",
 			wantStatus:  400,
-			wantMessage: "error binding data:",
-			request:     "",
+			wantMessage: "error binding data: age must be greater than 18",
+			request:     `{"name":"Emir", "age":15}`,
 		},
 		{
-			name:        "Success",
-			wantStatus:  400,
-			wantMessage: "error binding data:",
-			request:     "",
+			name:       "Success",
+			wantStatus: 200,
+			request:    `{"name":"Emir", "age":28}`,
 		},
 	}
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
-			ts := httptest.NewServer()
+			w := httptest.NewRecorder()
+			req, err := http.NewRequest("POST", "/", bytes.NewBufferString(tt.request))
+			if err != nil {
+				t.Error(err)
+			}
+			var th *testhandler
+			th.ServeHTTP(w, req)
+			defer w.Result().Body.Close()
+			bodyBytes, err := ioutil.ReadAll(w.Result().Body)
+			if err != nil {
+				t.Error(err)
+			}
+			if w.Code != tt.wantStatus {
+				t.Errorf("Expected status: %v, got: %v", tt.wantStatus, w.Code)
+			}
+			bb := strings.TrimSpace(string(bodyBytes))
+			if bb != tt.wantMessage {
+				t.Errorf("Expected message: %v, got: %v", tt.wantMessage, bb)
+			}
 		})
 
 	}
+}
+
+type testhandler struct{}
+
+func (*testhandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	var rq req
+	if err := bind.JSON(w, r, &rq); err != nil {
+		return
+	}
+	w.WriteHeader(200)
 }
