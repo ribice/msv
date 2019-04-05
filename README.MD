@@ -15,6 +15,8 @@ MSV includes the following packages:
 - Render: Writes HTTP responses and status codes to clients.
 - Middleware: Includes various http middlewares:
     - bauth: HTTP Basic Authentication
+    - httplog: HTTP Request/Response logging
+    - recocery: HTTP panics recoverer
 
 ## License
 
