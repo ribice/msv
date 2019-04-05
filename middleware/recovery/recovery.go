@@ -1,3 +1,4 @@
+// Package recovery is a fork of https://github.com/unrolled/recovery
 package recovery
 
 import (
@@ -7,7 +8,7 @@ import (
 	"runtime"
 )
 
-// Service represents recovery service
+// Service represents recovery middleware service
 type Service struct {
 	*log.Logger
 	panicHandler http.Handler
@@ -17,7 +18,7 @@ type Service struct {
 // New returns a new Recovery instance.
 func New(prefix string) *Service {
 	return &Service{
-		Logger:       log.New(os.Stderr, prefix, 0),
+		Logger:       log.New(os.Stderr, prefix, log.LstdFlags),
 		panicHandler: http.HandlerFunc(defaultPanicHandler),
 	}
 }
