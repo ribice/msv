@@ -4,7 +4,6 @@ package httplog
 import (
 	"bufio"
 	"errors"
-	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -15,7 +14,7 @@ import (
 
 // Service represents http request/response log middlware service
 type Service struct {
-	*log.Logger
+	log         *log.Logger
 	prefix      string
 	ignoredURIs []string
 }
@@ -23,7 +22,7 @@ type Service struct {
 // New returns a new Logger instance.
 func New(prefix string, ingoredURIs ...string) *Service {
 	return &Service{
-		Logger:      log.New(os.Stdout, prefix, log.LstdFlags),
+		log:         log.New(os.Stdout, prefix, log.LstdFlags),
 		prefix:      prefix,
 		ignoredURIs: ingoredURIs,
 	}
@@ -41,7 +40,6 @@ func (s *Service) MWFunc(h http.Handler) http.Handler {
 		h.ServeHTTP(crw, r)
 
 		for _, uri := range s.ignoredURIs {
-			fmt.Println("Ignored: ", uri, "Requested: ", r.RequestURI)
 			if uri == r.RequestURI {
 				return
 			}
@@ -57,7 +55,7 @@ func (s *Service) MWFunc(h http.Handler) http.Handler {
 			r.RemoteAddr = xrip
 		}
 
-		s.Printf("(%s) \"%s %s %s\" %d %d %s", r.RemoteAddr, r.Method, r.RequestURI, r.Proto, crw.status, crw.size, time.Since(start))
+		s.log.Printf("(%s) \"%s %s %s\" %d %d %s", r.RemoteAddr, r.Method, r.RequestURI, r.Proto, crw.status, crw.size, time.Since(start))
 	})
 }
 
