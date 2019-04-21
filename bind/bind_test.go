@@ -43,7 +43,7 @@ func TestJSON(t *testing.T) {
 		{
 			name:        "Error binding data",
 			wantStatus:  400,
-			wantMessage: "error binding data: age must be greater than 18",
+			wantMessage: "error binding request: age must be greater than 18",
 			request:     `{"name":"Emir", "age":15}`,
 		},
 		{
