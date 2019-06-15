@@ -33,7 +33,7 @@ func TestMiddleware(t *testing.T) {
 	}
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
-			ba := bauth.New("admin", "pass")
+			ba := bauth.New("admin", "pass", "DEFAULT")
 			ts := httptest.NewServer(ba.MWFunc(testHandler()))
 			defer ts.Close()
 			req, err := http.NewRequest(http.MethodGet, ts.URL, nil)
