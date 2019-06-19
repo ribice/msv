@@ -1,5 +1,10 @@
 # MSV - Minimal HTTP Server in Go
 
+[![Build Status](https://travis-ci.org/ribice/msv.svg?branch=master)](https://travis-ci.org/ribice/msv)
+[![codecov](https://codecov.io/gh/ribice/msv/branch/master/graph/badge.svg)](https://codecov.io/gh/ribice/msv)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ribice/msv)](https://goreportcard.com/report/github.com/ribice/msv)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c3cb09dbc0bc43186464/maintainability)](https://codeclimate.com/github/ribice/msv/maintainability)
+
 MSV is a minimal server implementation in Go. It wraps Gorilla multiplexer, lifecycle control, graceful shutdown and common middleware into a single reusable package.
 
 ## Introduction
