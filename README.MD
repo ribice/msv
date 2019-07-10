@@ -16,8 +16,7 @@ Whenever I start working on a new project, the packages implemented in msv are t
 MSV includes the following packages:
 
 - MSV (Server): Basic server implementation that wraps `gorilla/mux` with net/http server. Includes graceful shutdown and Start methods on server.
-- Bind: Marshalls and validates HTTP requests. `Binder` interface needs to be implemented in order for a struct to be passed to Bind.
-- Render: Writes HTTP responses and status codes to clients.
+- Render: Marshalls and validates HTTP requests. Writes HTTP responses and status codes to clients.
 - Middleware: Includes various http middlewares:
     - bauth: HTTP Basic Authentication
     - httplog: HTTP Request/Response logging

@@ -1,4 +1,4 @@
-package bind_test
+package render_test
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ribice/msv/bind"
+	"github.com/ribice/msv/render"
 )
 
 func (r *req) Bind() error {
@@ -25,7 +25,7 @@ type req struct {
 	Age  int    `json:"age"`
 }
 
-func TestJSON(t *testing.T) {
+func TestBind(t *testing.T) {
 
 	cases := []struct {
 		name        string
@@ -82,7 +82,7 @@ type testhandler struct{}
 
 func (*testhandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var rq req
-	if err := bind.JSON(w, r, &rq); err != nil {
+	if err := render.Bind(w, r, &rq); err != nil {
 		return
 	}
 	w.WriteHeader(200)

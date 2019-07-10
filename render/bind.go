@@ -1,4 +1,4 @@
-package bind
+package render
 
 import (
 	"encoding/json"
@@ -11,10 +11,10 @@ type Binder interface {
 	Bind() error
 }
 
-// JSON binds request into interface v, and validates the request
+// Bind binds JSON request into interface v, and validates the request
 //  If an error occurs during json unmarshalling, http 500 is responded to client
 //  If an error occurs during binding json, http 400 is responded to client
-func JSON(w http.ResponseWriter, r *http.Request, v interface{}) error {
+func Bind(w http.ResponseWriter, r *http.Request, v interface{}) error {
 	if err := json.NewDecoder(r.Body).Decode(v); err != nil {
 		http.Error(w, fmt.Sprintf("error decoding json: %v", err), 500)
 		return err
