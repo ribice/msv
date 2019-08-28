@@ -20,7 +20,7 @@ MSV includes the following packages:
 - Middleware: Includes various http middlewares:
     - bauth: HTTP Basic Authentication
     - httplog: HTTP Request/Response logging
-    - recocery: HTTP panics recoverer
+    - recovery: HTTP panics recoverer
 
 ## License
 
