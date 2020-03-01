@@ -34,8 +34,10 @@ func New(prefix string) (*Server, *mux.Router) {
 	}
 
 	srv := &Server{m: m, Server: &http.Server{
-		Addr:    fmt.Sprintf(":%s", port),
-		Handler: m,
+		Addr:         fmt.Sprintf(":%s", port),
+		Handler:      m,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}}
 	return srv, srv.m
 }

@@ -26,34 +26,29 @@ type req struct {
 }
 
 func TestBind(t *testing.T) {
-
-	cases := []struct {
-		name        string
+	cases := map[string]struct {
 		wantStatus  int
 		wantMessage string
 		request     string
-		wantStr     *req
+		wantStr     req
 	}{
-		{
-			name:        "Error decoding JSON",
+		"Error decoding JSON": {
 			wantStatus:  500,
 			wantMessage: "error decoding json: invalid character '}' after object key",
 			request:     `{"invalid:json"}`,
 		},
-		{
-			name:        "Error binding data",
+		"Error binding data": {
 			wantStatus:  400,
 			wantMessage: "error binding request: age must be greater than 18",
 			request:     `{"name":"Emir", "age":15}`,
 		},
-		{
-			name:       "Success",
+		"Success": {
 			wantStatus: 200,
 			request:    `{"name":"Emir", "age":28}`,
 		},
 	}
-	for _, tt := range cases {
-		t.Run(tt.name, func(t *testing.T) {
+	for name, tt := range cases {
+		t.Run(name, func(t *testing.T) {
 			w := httptest.NewRecorder()
 			req, err := http.NewRequest("POST", "/", bytes.NewBufferString(tt.request))
 			if err != nil {
@@ -74,7 +69,6 @@ func TestBind(t *testing.T) {
 				t.Errorf("Expected message: %v, got: %v", tt.wantMessage, bb)
 			}
 		})
-
 	}
 }
 
