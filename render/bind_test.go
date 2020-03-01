@@ -34,12 +34,12 @@ func TestBind(t *testing.T) {
 	}{
 		"Error decoding JSON": {
 			wantStatus:  500,
-			wantMessage: "error decoding json: invalid character '}' after object key",
+			wantMessage: `{"message":"error decoding json: invalid character '}' after object key"}`,
 			request:     `{"invalid:json"}`,
 		},
 		"Error binding data": {
 			wantStatus:  400,
-			wantMessage: "error binding request: age must be greater than 18",
+			wantMessage: `{"message":"error binding json: age must be greater than 18"}`,
 			request:     `{"name":"Emir", "age":15}`,
 		},
 		"Success": {

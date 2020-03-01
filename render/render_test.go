@@ -15,7 +15,6 @@ type resp struct {
 }
 
 func TestJSON(t *testing.T) {
-
 	cases := []struct {
 		name        string
 		wantStatus  int
